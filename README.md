@@ -1,7 +1,7 @@
 Stream Wrapper
 ==============
 
-This library provide a lightweight class for substitution PHP streams. It's very useful for Unit Testing when you need
+This library provide a lightweight class which allows substitute PHP streams. It's very useful for Unit Testing when you need
 to test a class which interact with files.
 
 Stream class create an unique [stream wrapper](http://www.php.net/manual/en/class.streamwrapper.php) which redirect
