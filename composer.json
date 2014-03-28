@@ -1,0 +1,23 @@
+{
+    "name":         "bcncommerce/stream-wrapper",
+    "description":  "PHP stream wrapper for testing classes which interact with files",
+    "keywords":     ["file", "filesystem", "test", "unit-test", "stream", "wrapper", "phpunit", "mock"],
+    "type":         "library",
+    "license":      "MIT",
+    "authors": [
+        {
+            "name":  "Sergey Kolodyazhnyy",
+            "email": "sergey.kolodyazhnyy@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~3.7.0"
+    },
+    "autoload": {
+        "psr-0": { "Bcn\\Component\\StreamWrapper\\": "" }
+    },
+    "target-dir": "Bcn/Component/StreamWrapper"
+}
