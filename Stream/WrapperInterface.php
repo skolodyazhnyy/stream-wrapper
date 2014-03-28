@@ -37,8 +37,8 @@ interface WrapperInterface
 
     /**
      * @param string $path
-     * @param int $option
-     * @param mixed $value
+     * @param int    $option
+     * @param mixed  $value
      */
     public function stream_metadata($path, $option, $value);
 
@@ -49,14 +49,14 @@ interface WrapperInterface
 
     /**
      * @param string $path
-     * @param int $mode
-     * @param int $options
+     * @param int    $mode
+     * @param int    $options
      */
     public function mkdir($path, $mode, $options);
 
     /**
      * @param string $path
-     * @param int $options
+     * @param int    $options
      */
     public function rmdir($path, $options);
 
@@ -83,14 +83,14 @@ interface WrapperInterface
     /**
      * @param string $path
      * @param string $mode
-     * @param int $options
+     * @param int    $options
      * @param string $opened_path
      */
     public function stream_open($path, $mode, $options, &$opened_path);
 
     /**
      * @param string $path
-     * @param int $options
+     * @param int    $options
      */
     public function dir_opendir($path, $options);
 
@@ -106,7 +106,7 @@ interface WrapperInterface
 
     /**
      * @param string $path
-     * @param int $flags
+     * @param int    $flags
      */
     public function url_stat($path, $flags);
 

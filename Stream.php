@@ -67,7 +67,7 @@ class Stream
 
     /**
      * @param $offset
-     * @param int $whence
+     * @param  int $whence
      * @return int
      */
     public function seek($offset, $whence = SEEK_SET)
@@ -76,10 +76,10 @@ class Stream
             case SEEK_CUR:
                 $this->position += $offset;
                 break;
-            case SEEK_END:
+            case SEEK_SET:
                 $this->position = $offset;
                 break;
-            case SEEK_SET:
+            case SEEK_END:
                 $this->position = $this->size() + $offset;
                 break;
         }
@@ -108,7 +108,7 @@ class Stream
     }
 
     /**
-     * @param int $count
+     * @param  int    $count
      * @return string
      */
     public function read($count)
@@ -140,7 +140,7 @@ class Stream
     }
 
     /**
-     * @param string $data
+     * @param  string $data
      * @return int
      */
     public function write($data)

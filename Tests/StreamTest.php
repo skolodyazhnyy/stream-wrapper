@@ -82,4 +82,36 @@ class StreamTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($written, 3 * strlen($string));
     }
 
+    /**
+     * @param $start
+     * @param $offset
+     * @param $whence
+     * @param $size
+     * @param $tell
+     *
+     * @dataProvider provideSeekAndTell
+     */
+    public function testSeekAndTell($start, $offset, $whence, $size, $tell)
+    {
+        $stream = new Stream(str_repeat("X", $size));
+        $stream->seek($start,  SEEK_SET);
+        $stream->seek($offset, $whence);
+
+        $this->assertEquals($tell, $stream->tell());
+    }
+
+    /**
+     * @return array
+     */
+    public function provideSeekAndTell()
+    {
+        return array(
+            "Seeking in empty file" => array(0,  100, SEEK_SET, 0,  -1),
+            "Seek set"              => array(10, 5,   SEEK_SET, 20, 5),
+            "Seek cur"              => array(10, 5,   SEEK_CUR, 20, 15),
+            "Seek end"              => array(10, -5,  SEEK_END, 20, 15),
+            "Seek over the end"     => array(10, 10,  SEEK_CUR, 19, 18)
+        );
+    }
+
 }

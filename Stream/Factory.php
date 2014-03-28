@@ -61,7 +61,7 @@ class Factory
     }
 
     /**
-     * @param Stream $stream
+     * @param  Stream $stream
      * @return string
      */
     public function capture(Stream $stream)

@@ -38,8 +38,8 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param int $offset
-     * @param int $whence
+     * @param  int $offset
+     * @param  int $whence
      * @return int
      */
     public function stream_seek($offset, $whence = SEEK_SET)
@@ -73,9 +73,9 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param string $path
-     * @param int $option
-     * @param mixed $value
+     * @param  string     $path
+     * @param  int        $option
+     * @param  mixed      $value
      * @throws \Exception
      */
     public function stream_metadata($path, $option, $value)
@@ -92,9 +92,9 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param string $path
-     * @param int $mode
-     * @param int $options
+     * @param  string     $path
+     * @param  int        $mode
+     * @param  int        $options
      * @throws \Exception
      */
     public function mkdir($path, $mode, $options)
@@ -103,8 +103,8 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param string $path
-     * @param int $options
+     * @param  string     $path
+     * @param  int        $options
      * @throws \Exception
      */
     public function rmdir($path, $options)
@@ -121,7 +121,7 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param int $count
+     * @param  int    $count
      * @return string
      */
     public function stream_read($count)
@@ -139,7 +139,7 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param int $cast_as
+     * @param  int        $cast_as
      * @throws \Exception
      * @return null
      */
@@ -149,10 +149,10 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param string $path
-     * @param string $mode
-     * @param int $options
-     * @param string $opened_path
+     * @param  string $path
+     * @param  string $mode
+     * @param  int    $options
+     * @param  string $opened_path
      * @return bool
      */
     public function stream_open($path, $mode, $options, &$opened_path)
@@ -161,8 +161,8 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param string $path
-     * @param int $options
+     * @param  string     $path
+     * @param  int        $options
      * @throws \Exception
      */
     public function dir_opendir($path, $options)
@@ -179,7 +179,7 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param string $data
+     * @param  string $data
      * @return int
      */
     public function stream_write($data)
@@ -188,8 +188,8 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param string $path
-     * @param int $flags
+     * @param  string     $path
+     * @param  int        $flags
      * @throws \Exception
      */
     public function url_stat($path, $flags)
@@ -198,7 +198,7 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param string $path
+     * @param  string     $path
      * @throws \Exception
      */
     public function unlink($path)
@@ -207,9 +207,9 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param int $option
-     * @param int $arg1
-     * @param int $arg2
+     * @param  int        $option
+     * @param  int        $arg1
+     * @param  int        $arg2
      * @throws \Exception
      */
     public function stream_set_option($option, $arg1, $arg2)
@@ -218,8 +218,8 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param string $path_from
-     * @param string $path_to
+     * @param  string     $path_from
+     * @param  string     $path_to
      * @throws \Exception
      */
     public function rename($path_from, $path_to)
@@ -228,7 +228,7 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param int $operation
+     * @param  int        $operation
      * @throws \Exception
      */
     public function stream_lock($operation)
