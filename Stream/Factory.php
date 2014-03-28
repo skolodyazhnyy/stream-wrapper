@@ -54,7 +54,7 @@ class Factory
      */
     public function release($id)
     {
-        if (isset($this->used)) {
+        if (isset($this->used[$id])) {
             unset($this->used[$id]);
             $this->free[] = $id;
         }
