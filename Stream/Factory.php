@@ -1,11 +1,11 @@
 <?php
 
-namespace Bcn\Component\StreamWrapper\Wrapper;
+namespace Bcn\Component\StreamWrapper\Stream;
 
 use Bcn\Component\StreamWrapper\Stream;
 
-class Factory {
-
+class Factory
+{
     const PROXY_CLASSNAME = "Proxy";
 
     /** @var Stream[] */
@@ -20,17 +20,19 @@ class Factory {
     /**
      *
      */
-    protected function __construct() {
-
+    protected function __construct()
+    {
     }
 
     /**
      * @return $this
      */
-    public static function getInstance() {
-        if(self::$instance === null) {
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
             self::$instance = new self();
         }
+
         return self::$instance;
     }
 
@@ -38,17 +40,20 @@ class Factory {
      * @param $id
      * @return Stream|null
      */
-    public function getStream($id) {
+    public function getStream($id)
+    {
         if (isset($this->used[$id])) {
             return $this->used[$id];
         }
+
         return null;
     }
 
     /**
      * @param $id
      */
-    public function release($id) {
+    public function release($id)
+    {
         if (isset($this->used)) {
             unset($this->used[$id]);
             $this->free[] = $id;
@@ -66,6 +71,7 @@ class Factory {
         }
         $id = array_pop($this->free);
         $this->used[$id] = $stream;
+
         return $id;
     }
 
@@ -84,6 +90,7 @@ class Factory {
         ));
 
         stream_wrapper_register($id, $this->getProxyClassName($id));
+
         return $id;
     }
 

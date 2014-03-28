@@ -5,7 +5,7 @@
  * Date: 28/03/14
  * Time: 00:17
  */
-namespace Bcn\Component\StreamWrapper\Wrapper;
+namespace Bcn\Component\StreamWrapper\Stream;
 
 interface WrapperInterface
 {

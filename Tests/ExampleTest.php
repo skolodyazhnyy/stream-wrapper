@@ -8,7 +8,6 @@
 
 namespace Bcn\Component\StreamWrapper\Tests;
 
-
 use Bcn\Component\StreamWrapper\Stream;
 
 class ExampleTest extends \PHPUnit_Framework_TestCase
@@ -17,7 +16,8 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
     /**
      * Reading example
      */
-    public function testExampleReading() {
+    public function testExampleReading()
+    {
         $stream = new Stream("Content");
 
         $fh = fopen($stream, "r");
@@ -30,15 +30,15 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
     /**
      * Writing example
      */
-    public function testExampleWriting() {
+    public function testExampleWriting()
+    {
         $stream = new Stream();
 
         $fh = fopen($stream, "r");
         fputs($fh, "Content");
         fclose($fh);
 
-        $this->assertEquals("Content", $stream->content());
+        $this->assertEquals("Content", $stream->getContent());
     }
 
 }
- 

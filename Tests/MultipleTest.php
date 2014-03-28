@@ -8,11 +8,10 @@
 
 namespace Bcn\Component\StreamWrapper\Tests;
 
-
 use Bcn\Component\StreamWrapper\Stream;
 
-class MultipleTest extends \PHPUnit_Framework_TestCase {
-
+class MultipleTest extends \PHPUnit_Framework_TestCase
+{
     /**
      *
      */
@@ -23,20 +22,19 @@ class MultipleTest extends \PHPUnit_Framework_TestCase {
         $fhs     = array();
         $tests   = 100;
 
-        for($i = 0; $i < $tests; $i++) {
+        for ($i = 0; $i < $tests; $i++) {
             $streams[$i] = new Stream();
             $fhs[$i]     = fopen($streams[$i], "w");
         }
 
-        for($i = 0; $i < $tests; $i++) {
+        for ($i = 0; $i < $tests; $i++) {
             fputs($fhs[$i], "Stream#" . $i);
         }
 
-        for($i = 0; $i < $tests; $i++) {
+        for ($i = 0; $i < $tests; $i++) {
             fclose($fhs[$i]);
-            $this->assertEquals("Stream#" . $i, $streams[$i]->content());
+            $this->assertEquals("Stream#" . $i, $streams[$i]->getContent());
         }
     }
 
 }
- 

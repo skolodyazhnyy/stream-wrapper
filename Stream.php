@@ -2,7 +2,7 @@
 
 namespace Bcn\Component\StreamWrapper;
 
-use Bcn\Component\StreamWrapper\Wrapper\Factory;
+use Bcn\Component\StreamWrapper\Stream\Factory;
 
 class Stream
 {
@@ -21,7 +21,8 @@ class Stream
     /**
      * @param null|string $content
      */
-    public function __construct($content = null) {
+    public function __construct($content = null)
+    {
         $this->content  = $content;
         $this->position = -1;
 
@@ -31,7 +32,8 @@ class Stream
     /**
      *
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         Factory::getInstance()->release($this->id);
     }
 
@@ -42,19 +44,24 @@ class Stream
      * @param $opened_path
      * @return bool
      */
-    public function open($path, $mode, $options, &$opened_path) {
-        if($path == $this->id . "://stream" && !$this->open) {
+    public function open($path, $mode, $options, &$opened_path)
+    {
+        if ($path == $this->id . "://stream" && !$this->open) {
             $this->open = true;
+
             return true;
         }
+
         return false;
     }
 
     /**
      * @return bool
      */
-    public function close() {
+    public function close()
+    {
         $this->open = false;
+
         return true;
     }
 
@@ -63,8 +70,9 @@ class Stream
      * @param int $whence
      * @return int
      */
-    public function seek($offset, $whence = SEEK_SET) {
-        switch($whence) {
+    public function seek($offset, $whence = SEEK_SET)
+    {
+        switch ($whence) {
             case SEEK_CUR:
                 $this->position += $offset;
                 break;
@@ -76,7 +84,7 @@ class Stream
                 break;
         }
 
-        if($this->position >= $this->size()) {
+        if ($this->position >= $this->size()) {
             $this->position = $this->size() - 1;
         }
 
@@ -86,14 +94,16 @@ class Stream
     /**
      * @return int
      */
-    public function tell() {
+    public function tell()
+    {
         return $this->position;
     }
 
     /**
      * @return bool
      */
-    public function flush() {
+    public function flush()
+    {
         return true;
     }
 
@@ -105,6 +115,7 @@ class Stream
     {
         $start = $this->position + 1;
         $this->seek($count, SEEK_CUR);
+
         return mb_substr($this->content, $start, $count);
     }
 
@@ -116,6 +127,7 @@ class Stream
     {
         $this->content = mb_substr($this->content, 0, $new_size);
         $this->seek(0, SEEK_CUR);
+
         return null;
     }
 
@@ -137,34 +149,39 @@ class Stream
         $append  = mb_substr($this->content, $this->position + 1 + mb_strlen($data));
 
         $this->content = $prepend . $data . $append;
+
         return mb_strlen($data);
     }
 
     /**
      * @return int
      */
-    public function size() {
+    public function size()
+    {
         return mb_strlen($this->content);
     }
 
     /**
      * @return string
      */
-    public function uri() {
+    public function getUri()
+    {
         return $this->id . "://stream";
     }
 
     /**
      * @return string
      */
-    public function __toString() {
-        return $this->uri();
+    public function __toString()
+    {
+        return $this->getUri();
     }
 
     /**
      * @return null|string
      */
-    public function content() {
+    public function getContent()
+    {
         return $this->content;
     }
 

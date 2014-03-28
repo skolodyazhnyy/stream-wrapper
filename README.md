@@ -30,5 +30,5 @@ fputs($fh, "Content");
 fclose($fh);
 
 // Now you can perform actions on generated content
-echo $stream->content(); // output Content
+echo $stream->getContent(); // output Content
 ```

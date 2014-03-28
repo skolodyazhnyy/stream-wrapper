@@ -8,18 +8,17 @@
 
 namespace Bcn\Component\StreamWrapper\Tests;
 
-
 use Bcn\Component\StreamWrapper\Stream;
 
-class StreamTest extends \PHPUnit_Framework_TestCase {
-
+class StreamTest extends \PHPUnit_Framework_TestCase
+{
     /**
      *
      */
     public function testOpening()
     {
         $stream = new Stream();
-        $fh = fopen($stream->uri(), "r");
+        $fh = fopen($stream->getUri(), "r");
         fclose($fh);
     }
 
@@ -33,7 +32,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase {
     public function testReading($data, $length, $expected)
     {
         $stream = new Stream($data);
-        $fh = fopen($stream->uri(), "r");
+        $fh = fopen($stream->getUri(), "r");
         $actual = fread($fh, $length);
         fclose($fh);
 
@@ -43,7 +42,8 @@ class StreamTest extends \PHPUnit_Framework_TestCase {
     /**
      * @return array
      */
-    public function provideReadData() {
+    public function provideReadData()
+    {
         return array(
             'Empty content'               => array('', 1000, ''),
             'Read one char'               => array('content', 1, 'c'),
@@ -57,7 +57,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase {
     public function testGet()
     {
         $stream = new Stream("line1\nline2\nline3");
-        $fh = fopen($stream->uri(), "r");
+        $fh = fopen($stream->getUri(), "r");
         $actual = fgets($fh);
         fclose($fh);
 
@@ -72,18 +72,19 @@ class StreamTest extends \PHPUnit_Framework_TestCase {
         $string = "hello";
 
         $stream = new Stream();
-        $fh = fopen($stream->uri(), "r");
+        $fh = fopen($stream->getUri(), "r");
         $written = fwrite($fh, $string);
         fclose($fh);
 
-        $this->assertEquals($string, $stream->content());
+        $this->assertEquals($string, $stream->getContent());
         $this->assertEquals($written, strlen($string));
     }
 
     /**
      *
      */
-    public function testExampleReading() {
+    public function testExampleReading()
+    {
         $stream = new Stream("Content");
 
         $fh = fopen($stream, "r");
@@ -96,15 +97,15 @@ class StreamTest extends \PHPUnit_Framework_TestCase {
     /**
      *
      */
-    public function testExampleWriting() {
+    public function testExampleWriting()
+    {
         $stream = new Stream();
 
         $fh = fopen($stream, "r");
         fputs($fh, "Content");
         fclose($fh);
 
-        $this->assertEquals("Content", $stream->content());
+        $this->assertEquals("Content", $stream->getContent());
     }
 
 }
- 

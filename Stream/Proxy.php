@@ -1,6 +1,6 @@
 <?php
 
-namespace Bcn\Component\StreamWrapper\Wrapper;
+namespace Bcn\Component\StreamWrapper\Stream;
 
 use Bcn\Component\StreamWrapper\Stream;
 
