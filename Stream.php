@@ -149,6 +149,7 @@ class Stream
         $append  = mb_substr($this->content, $this->position + 1 + mb_strlen($data));
 
         $this->content = $prepend . $data . $append;
+        $this->seek(mb_strlen($data), SEEK_CUR);
 
         return mb_strlen($data);
     }
