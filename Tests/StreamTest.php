@@ -86,7 +86,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase {
     public function testExampleReading() {
         $stream = new Stream("Content");
 
-        $fh = fopen($stream->uri(), "r");
+        $fh = fopen($stream, "r");
         $data = fgets($fh);
         fclose($fh);
 
@@ -99,7 +99,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase {
     public function testExampleWriting() {
         $stream = new Stream();
 
-        $fh = fopen($stream->uri(), "r");
+        $fh = fopen($stream, "r");
         fputs($fh, "Content");
         fclose($fh);
 

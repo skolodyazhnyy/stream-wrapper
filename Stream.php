@@ -156,6 +156,13 @@ class Stream
     }
 
     /**
+     * @return string
+     */
+    public function __toString() {
+        return $this->uri();
+    }
+
+    /**
      * @return null|string
      */
     public function content() {

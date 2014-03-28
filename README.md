@@ -10,7 +10,7 @@ Usage
 // Reading
 $stream = new Stream("Content");
 
-$fh = fopen($stream->uri(), "r");
+$fh = fopen($stream, "r");
 echo fgets($fh); // output Content
 fclose($fh);
 ```
@@ -19,7 +19,7 @@ fclose($fh);
 // Writing
 $stream = new Stream();
 
-$fh = fopen($stream->uri(), "r");
+$fh = fopen($stream, "r");
 fputs($fh, "Content");
 fclose($fh);
 
