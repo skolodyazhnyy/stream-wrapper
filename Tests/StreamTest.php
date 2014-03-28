@@ -69,12 +69,41 @@ class StreamTest extends \PHPUnit_Framework_TestCase {
      */
     public function testWrite()
     {
+        $string = "hello";
+
         $stream = new Stream();
         $fh = fopen($stream->uri(), "r");
-        $actual = fwrite($fh, "hello");
+        $written = fwrite($fh, $string);
         fclose($fh);
 
-        $this->assertEquals("hello", $stream->content());
+        $this->assertEquals($string, $stream->content());
+        $this->assertEquals($written, strlen($string));
+    }
+
+    /**
+     *
+     */
+    public function testExampleReading() {
+        $stream = new Stream("Content");
+
+        $fh = fopen($stream->uri(), "r");
+        $data = fgets($fh);
+        fclose($fh);
+
+        $this->assertEquals("Content", $data);
+    }
+
+    /**
+     *
+     */
+    public function testExampleWriting() {
+        $stream = new Stream();
+
+        $fh = fopen($stream->uri(), "r");
+        fputs($fh, "Content");
+        fclose($fh);
+
+        $this->assertEquals("Content", $stream->content());
     }
 
 }
