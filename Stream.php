@@ -2,12 +2,12 @@
 
 namespace Bcn\Component\StreamWrapper;
 
-use Bcn\Component\StreamWrapper\Wrapper\Registry;
+use Bcn\Component\StreamWrapper\Wrapper\Factory;
 
 class Stream
 {
 
-    const INSTANCE_CLASSNAME = "Instance";
+    const PROXY_CLASSNAME = "Proxy";
 
     /** @var null|string */
     protected $id = null;
@@ -22,18 +22,17 @@ class Stream
      * @param null|string $content
      */
     public function __construct($content = null) {
-        $this->id       = uniqid("stream");
         $this->content  = $content;
         $this->position = -1;
 
-        $this->register();
+        $this->id = Factory::getInstance()->capture($this);
     }
 
     /**
      *
      */
     public function __destruct() {
-        $this->unregister();
+        Factory::getInstance()->release($this->id);
     }
 
     /**
@@ -167,33 +166,6 @@ class Stream
      */
     public function content() {
         return $this->content;
-    }
-
-    /**
-     *
-     */
-    protected function register()
-    {
-        Registry::register($this->id, $this);
-
-        $namespaceName = __NAMESPACE__ . "\\Wrapper";
-        eval(sprintf(
-            "namespace %s { class %s extends \\%s {}; }",
-            $namespaceName,
-            self::INSTANCE_CLASSNAME . "_" . $this->id,
-            $namespaceName . "\\" . self::INSTANCE_CLASSNAME
-        ));
-
-        stream_wrapper_register($this->id, $namespaceName . "\\" . self::INSTANCE_CLASSNAME . "_" . $this->id);
-    }
-
-    /**
-     *
-     */
-    protected function unregister()
-    {
-        stream_wrapper_unregister($this->id);
-        Registry::unregister($this->id);
     }
 
 }

@@ -4,20 +4,29 @@ namespace Bcn\Component\StreamWrapper\Wrapper;
 
 use Bcn\Component\StreamWrapper\Stream;
 
-abstract class Instance implements WrapperInterface {
+abstract class Proxy implements WrapperInterface
+{
 
     /** @var Stream */
     protected $stream;
 
+    /** @var string */
+    protected $id;
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->id = str_replace(__CLASS__ . "_", '', get_class($this));
+    }
+
     /**
      * @return Stream
      */
-    protected function stream() {
-        if($this->stream === null) {
-            $id = str_replace(__CLASS__ . "_", '', get_class($this));
-            $this->stream = Registry::registry($id);
-        }
-        return $this->stream;
+    protected function getStream()
+    {
+        return Factory::getInstance()->getStream($this->id);
     }
 
     /**
@@ -35,7 +44,7 @@ abstract class Instance implements WrapperInterface {
      */
     public function stream_seek($offset, $whence = SEEK_SET)
     {
-        return $this->stream()->seek($offset, $whence);
+        return $this->getStream()->seek($offset, $whence);
     }
 
     /**
@@ -60,7 +69,7 @@ abstract class Instance implements WrapperInterface {
      */
     public function stream_tell()
     {
-        return $this->stream()->tell();
+        return $this->getStream()->tell();
     }
 
     /**
@@ -79,7 +88,7 @@ abstract class Instance implements WrapperInterface {
      */
     public function stream_close()
     {
-        return $this->stream()->close();
+        return $this->getStream()->close();
     }
 
     /**
@@ -108,7 +117,7 @@ abstract class Instance implements WrapperInterface {
      */
     public function stream_flush()
     {
-        return $this->stream()->flush();
+        return $this->getStream()->flush();
     }
 
     /**
@@ -117,7 +126,7 @@ abstract class Instance implements WrapperInterface {
      */
     public function stream_read($count)
     {
-        return $this->stream()->read($count);
+        return $this->getStream()->read($count);
     }
 
     /**
@@ -126,7 +135,7 @@ abstract class Instance implements WrapperInterface {
      */
     public function stream_truncate($new_size)
     {
-        return $this->stream()->truncate($new_size);
+        return $this->getStream()->truncate($new_size);
     }
 
     /**
@@ -148,7 +157,7 @@ abstract class Instance implements WrapperInterface {
      */
     public function stream_open($path, $mode, $options, &$opened_path)
     {
-        return $this->stream()->open($path, $mode, $opened_path, $opened_path);
+        return $this->getStream()->open($path, $mode, $opened_path, $opened_path);
     }
 
     /**
@@ -166,7 +175,7 @@ abstract class Instance implements WrapperInterface {
      */
     public function stream_eof()
     {
-        return $this->stream()->eof();
+        return $this->getStream()->eof();
     }
 
     /**
@@ -175,7 +184,7 @@ abstract class Instance implements WrapperInterface {
      */
     public function stream_write($data)
     {
-        return $this->stream()->write($data);
+        return $this->getStream()->write($data);
     }
 
     /**
