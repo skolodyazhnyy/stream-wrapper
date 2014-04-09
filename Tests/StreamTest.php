@@ -114,4 +114,43 @@ class StreamTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     *
+     */
+    public function testCustomUri()
+    {
+        $filename = "custom/path/custom.name";
+        $stream = new Stream("Content", $filename);
+        $uri = (string) $stream;
+        list($wrapper, $name) = explode("://", $uri, 2);
+
+        // Name changed
+        $this->assertEquals($filename, $name);
+
+        // Can't open stream by default name
+        $defaultName = implode("://", array($wrapper, "stream"));
+        $this->assertFalse(@fopen($defaultName, "r"));
+
+        // Stream opens with custom name
+        $this->assertTrue((boolean) fopen($stream, "r"));
+    }
+
+    /**
+     *
+     */
+    public function testStat()
+    {
+        $stream = new Stream();
+        $stat = stat($stream);
+
+        $keys = array(
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+            'dev', 'ino', 'mode', 'nlink', 'uid','gid', 'rdev', 'size', 'atime', 'mtime', 'ctime', 'blksize', 'blocks'
+        );
+
+        foreach($keys as $key) {
+            $this->assertArrayHasKey($key, $stat);
+        }
+    }
+
 }

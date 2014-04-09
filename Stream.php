@@ -17,14 +17,18 @@ class Stream
     protected $position;
     /** @var boolean */
     protected $open;
+    /** @var string */
+    protected $filename;
 
     /**
      * @param null|string $content
+     * @param null|string $filename
      */
-    public function __construct($content = null)
+    public function __construct($content = null, $filename = null)
     {
         $this->content  = $content;
         $this->position = -1;
+        $this->filename = $filename ?: "stream";
 
         $this->id = Factory::getInstance()->capture($this);
     }
@@ -46,7 +50,7 @@ class Stream
      */
     public function open($path, $mode, $options, &$opened_path)
     {
-        if ($path == $this->id . "://stream" && !$this->open) {
+        if ($path == $this->id . "://" . $this->filename && !$this->open) {
             $this->open = true;
 
             return true;
@@ -163,11 +167,35 @@ class Stream
     }
 
     /**
+     * @return array
+     */
+    public function stat()
+    {
+        $stat = array(
+            'dev'       => 19,
+            'ino'       => 0,
+            'mode'      => 0100666,
+            'nlink'     => 1,
+            'uid'       => 1,
+            'gid'       => 1,
+            'rdev'      => 0,
+            'size'      => $this->size(),
+            'atime'     => time(),
+            'mtime'     => time(),
+            'ctime'     => time(),
+            'blksize'   => -1,
+            'blocks'    => -1
+        );
+
+        return array_merge(array_values($stat), $stat);
+    }
+
+    /**
      * @return string
      */
     public function getUri()
     {
-        return $this->id . "://stream";
+        return $this->id . "://" . $this->filename;
     }
 
     /**

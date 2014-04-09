@@ -18,7 +18,6 @@ abstract class Proxy implements WrapperInterface
      */
     public function __construct()
     {
-        $this->id = str_replace(__CLASS__ . "_", '', get_class($this));
     }
 
     /**
@@ -26,6 +25,9 @@ abstract class Proxy implements WrapperInterface
      */
     protected function getStream()
     {
+        if(!$this->id) {
+            $this->id = str_replace(__CLASS__ . "_", '', get_class($this));
+        }
         return Factory::getInstance()->getStream($this->id);
     }
 
@@ -188,13 +190,13 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @param  string     $path
-     * @param  int        $flags
-     * @throws \Exception
+     * @param  string $path
+     * @param  int    $flags
+     * @return array
      */
     public function url_stat($path, $flags)
     {
-        throw new \Exception(sprintf("Method %s not implemented", __METHOD__));
+        return $this->getStream()->stat($path, $flags);
     }
 
     /**
