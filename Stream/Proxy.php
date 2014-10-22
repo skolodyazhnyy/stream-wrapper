@@ -36,7 +36,7 @@ abstract class Proxy implements WrapperInterface
      */
     public function stream_stat()
     {
-        throw new \Exception(sprintf("Method %s not implemented", __METHOD__));
+        return $this->getStream()->stat();
     }
 
     /**
