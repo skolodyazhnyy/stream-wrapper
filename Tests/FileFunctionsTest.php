@@ -1,19 +1,16 @@
 <?php
+
 /**
- *
  * This file is part of the Stream Wrapper Project.
  *
  * @author Sergey Kolodyazhnyy <skolodyazhnyy@ebay.com>
- *
  */
-
 namespace Bcn\Component\StreamWrapper\Tests;
 
 use Bcn\Component\StreamWrapper\Stream;
 
 class FileFunctionsTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      *
      */
@@ -53,5 +50,4 @@ class FileFunctionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFalse(is_dir(new Stream()));
     }
-
 }

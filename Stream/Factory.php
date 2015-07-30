@@ -6,20 +6,23 @@ use Bcn\Component\StreamWrapper\Stream;
 
 class Factory
 {
-    const PROXY_CLASSNAME = "Proxy";
-
-    /** @var Stream[] */
-    protected $used = array();
-
-    /** @var array */
-    protected $free = array();
-
-    /** @var Factory */
-    protected static $instance = null;
+    const PROXY_CLASSNAME = 'Proxy';
 
     /**
-     *
+     * @var Stream[]
      */
+    protected $used = array();
+
+    /**
+     * @var array
+     */
+    protected $free = array();
+
+    /**
+     * @var Factory
+     */
+    protected static $instance = null;
+
     protected function __construct()
     {
     }
@@ -37,7 +40,8 @@ class Factory
     }
 
     /**
-     * @param $id
+     * @param string $id
+     *
      * @return Stream|null
      */
     public function getStream($id)
@@ -46,11 +50,11 @@ class Factory
             return $this->used[$id];
         }
 
-        return null;
+        return;
     }
 
     /**
-     * @param $id
+     * @param string $id
      */
     public function release($id)
     {
@@ -61,7 +65,8 @@ class Factory
     }
 
     /**
-     * @param  Stream $stream
+     * @param Stream $stream
+     *
      * @return string
      */
     public function capture(Stream $stream)
@@ -69,6 +74,7 @@ class Factory
         if (empty($this->free)) {
             $this->free[] = $this->create();
         }
+
         $id = array_pop($this->free);
         $this->used[$id] = $stream;
 
@@ -80,13 +86,13 @@ class Factory
      */
     protected function create()
     {
-        $id = uniqid("stream");
+        $id = uniqid('stream');
 
         eval(sprintf(
-            "namespace %s { class %s extends \\%s {}; }",
+            'namespace %s { class %s extends \\%s {}; }',
             __NAMESPACE__,
-            self::PROXY_CLASSNAME . "_" . $id,
-            __NAMESPACE__ . "\\" . self::PROXY_CLASSNAME
+            self::PROXY_CLASSNAME.'_'.$id,
+            __NAMESPACE__.'\\'.self::PROXY_CLASSNAME
         ));
 
         stream_wrapper_register($id, $this->getProxyClassName($id));
@@ -95,12 +101,12 @@ class Factory
     }
 
     /**
-     * @param $id
+     * @param string $id
+     *
      * @return string
      */
     protected function getProxyClassName($id)
     {
-        return __NAMESPACE__ . "\\" . self::PROXY_CLASSNAME . "_" . $id;
+        return __NAMESPACE__.'\\'.self::PROXY_CLASSNAME.'_'.$id;
     }
-
 }

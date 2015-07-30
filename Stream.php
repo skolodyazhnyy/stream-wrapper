@@ -6,8 +6,7 @@ use Bcn\Component\StreamWrapper\Stream\Factory;
 
 class Stream
 {
-
-    const PROXY_CLASSNAME = "Proxy";
+    const PROXY_CLASSNAME = 'Proxy';
 
     /** @var null|string */
     protected $id = null;
@@ -15,7 +14,7 @@ class Stream
     protected $content;
     /** @var int */
     protected $position;
-    /** @var boolean */
+    /** @var bool */
     protected $open;
     /** @var string */
     protected $filename;
@@ -26,9 +25,9 @@ class Stream
      */
     public function __construct($content = null, $filename = null)
     {
-        $this->content  = $content;
+        $this->content = $content;
         $this->position = -1;
-        $this->filename = $filename ?: "stream";
+        $this->filename = $filename ?: 'stream';
 
         $this->id = Factory::getInstance()->capture($this);
     }
@@ -46,11 +45,12 @@ class Stream
      * @param $mode
      * @param $options
      * @param $opened_path
+     *
      * @return bool
      */
     public function open($path, $mode, $options, &$opened_path)
     {
-        if ($path == $this->id . "://" . $this->filename && !$this->open) {
+        if ($path == $this->id.'://'.$this->filename && !$this->open) {
             $this->open = true;
 
             return true;
@@ -71,7 +71,8 @@ class Stream
 
     /**
      * @param $offset
-     * @param  int $whence
+     * @param int $whence
+     *
      * @return int
      */
     public function seek($offset, $whence = SEEK_SET)
@@ -112,7 +113,8 @@ class Stream
     }
 
     /**
-     * @param  int    $count
+     * @param int $count
+     *
      * @return string
      */
     public function read($count)
@@ -125,6 +127,7 @@ class Stream
 
     /**
      * @param $new_size
+     *
      * @return bool
      */
     public function truncate($new_size)
@@ -132,11 +135,11 @@ class Stream
         $this->content = mb_substr($this->content, 0, $new_size);
         $this->seek(0, SEEK_CUR);
 
-        return null;
+        return;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function eof()
     {
@@ -144,15 +147,16 @@ class Stream
     }
 
     /**
-     * @param  string $data
+     * @param string $data
+     *
      * @return int
      */
     public function write($data)
     {
         $prepend = mb_substr($this->content, 0, $this->position + 1);
-        $append  = mb_substr($this->content, $this->position + 1 + mb_strlen($data));
+        $append = mb_substr($this->content, $this->position + 1 + mb_strlen($data));
 
-        $this->content = $prepend . $data . $append;
+        $this->content = $prepend.$data.$append;
         $this->seek(mb_strlen($data), SEEK_CUR);
 
         return mb_strlen($data);
@@ -172,19 +176,19 @@ class Stream
     public function stat()
     {
         $stat = array(
-            'dev'       => 19,
-            'ino'       => 0,
-            'mode'      => 0100666,
-            'nlink'     => 1,
-            'uid'       => 1,
-            'gid'       => 1,
-            'rdev'      => 0,
-            'size'      => $this->size(),
-            'atime'     => time(),
-            'mtime'     => time(),
-            'ctime'     => time(),
-            'blksize'   => -1,
-            'blocks'    => -1
+            'dev' => 19,
+            'ino' => 0,
+            'mode' => 0100666,
+            'nlink' => 1,
+            'uid' => 1,
+            'gid' => 1,
+            'rdev' => 0,
+            'size' => $this->size(),
+            'atime' => time(),
+            'mtime' => time(),
+            'ctime' => time(),
+            'blksize' => -1,
+            'blocks' => -1,
         );
 
         return array_merge(array_values($stat), $stat);
@@ -195,7 +199,7 @@ class Stream
      */
     public function getUri()
     {
-        return $this->id . "://" . $this->filename;
+        return $this->id.'://'.$this->filename;
     }
 
     /**
@@ -213,5 +217,4 @@ class Stream
     {
         return $this->content;
     }
-
 }

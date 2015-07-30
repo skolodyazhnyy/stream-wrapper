@@ -1,16 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: skolodyazhny
- * Date: 28/03/14
- * Time: 00:17
- */
+
 namespace Bcn\Component\StreamWrapper\Stream;
 
 interface WrapperInterface
 {
     /**
-     *
+     * @return mixed
      */
     public function stream_stat();
 
@@ -26,12 +21,12 @@ interface WrapperInterface
     public function dir_rewinddir();
 
     /**
-     *
+     * @return mixed
      */
     public function dir_readdir();
 
     /**
-     *
+     * @return int
      */
     public function stream_tell();
 
@@ -43,7 +38,7 @@ interface WrapperInterface
     public function stream_metadata($path, $option, $value);
 
     /**
-     *
+     * @return bool
      */
     public function stream_close();
 
@@ -61,7 +56,7 @@ interface WrapperInterface
     public function rmdir($path, $options);
 
     /**
-     *
+     * @return bool
      */
     public function stream_flush();
 
@@ -71,7 +66,7 @@ interface WrapperInterface
     public function stream_read($count);
 
     /**
-     * @param $new_size
+     * @param int $new_size
      */
     public function stream_truncate($new_size);
 
@@ -95,7 +90,7 @@ interface WrapperInterface
     public function dir_opendir($path, $options);
 
     /**
-     *
+     * @return bool
      */
     public function stream_eof();
 
@@ -134,7 +129,7 @@ interface WrapperInterface
     public function stream_lock($operation);
 
     /**
-     *
+     * @return bool
      */
     public function dir_closedir();
 }
