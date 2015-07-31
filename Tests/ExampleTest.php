@@ -33,7 +33,7 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
     {
         $stream = new Stream();
 
-        $fh = fopen($stream, 'r');
+        $fh = fopen($stream, 'w');
         fputs($fh, 'Content');
         fclose($fh);
 

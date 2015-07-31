@@ -8,15 +8,29 @@ class Stream
 {
     const PROXY_CLASSNAME = 'Proxy';
 
-    /** @var null|string */
+    /**
+     * @var null|string
+     */
     protected $id = null;
-    /** @var string $content */
+
+    /**
+     * @var resource
+     */
+    protected $handle;
+
+    /**
+     * @var string
+     */
     protected $content;
-    /** @var int */
-    protected $position;
-    /** @var bool */
+
+    /**
+     * @var bool
+     */
     protected $open;
-    /** @var string */
+
+    /**
+     * @var string
+     */
     protected $filename;
 
     /**
@@ -25,9 +39,13 @@ class Stream
      */
     public function __construct($content = null, $filename = null)
     {
-        $this->content = $content;
-        $this->position = -1;
         $this->filename = $filename ?: 'stream';
+        $this->handle = fopen('php://temp', 'rw+');
+
+        if ($content !== null) {
+            $this->write($content);
+            $this->seek(0);
+        }
 
         $this->id = Factory::getInstance()->capture($this);
     }
@@ -50,13 +68,14 @@ class Stream
      */
     public function open($path, $mode, $options, &$opened_path)
     {
-        if ($path == $this->id.'://'.$this->filename && !$this->open) {
-            $this->open = true;
-
-            return true;
+        if ($path != $this->id.'://'.$this->filename || $this->open) {
+            return false;
         }
 
-        return false;
+        $this->seek(0, $this->isAppendMode($mode) ? SEEK_END : SEEK_SET);
+        $this->open = true;
+
+        return true;
     }
 
     /**
@@ -70,30 +89,14 @@ class Stream
     }
 
     /**
-     * @param $offset
+     * @param int $offset
      * @param int $whence
      *
      * @return int
      */
     public function seek($offset, $whence = SEEK_SET)
     {
-        switch ($whence) {
-            case SEEK_CUR:
-                $this->position += $offset;
-                break;
-            case SEEK_SET:
-                $this->position = $offset;
-                break;
-            case SEEK_END:
-                $this->position = $this->size() + $offset;
-                break;
-        }
-
-        if ($this->position >= $this->size()) {
-            $this->position = $this->size() - 1;
-        }
-
-        return $this->position;
+        return fseek($this->handle, $offset, $whence);
     }
 
     /**
@@ -101,7 +104,7 @@ class Stream
      */
     public function tell()
     {
-        return $this->position;
+        return ftell($this->handle);
     }
 
     /**
@@ -109,7 +112,7 @@ class Stream
      */
     public function flush()
     {
-        return true;
+        return fflush($this->handle);
     }
 
     /**
@@ -119,10 +122,7 @@ class Stream
      */
     public function read($count)
     {
-        $start = $this->position + 1;
-        $this->seek($count, SEEK_CUR);
-
-        return mb_substr($this->content, $start, $count);
+        return fread($this->handle, $count);
     }
 
     /**
@@ -132,8 +132,7 @@ class Stream
      */
     public function truncate($new_size)
     {
-        $this->content = mb_substr($this->content, 0, $new_size);
-        $this->seek(0, SEEK_CUR);
+        ftruncate($this->handle, $new_size);
 
         return;
     }
@@ -143,7 +142,7 @@ class Stream
      */
     public function eof()
     {
-        return $this->position + 1 >= $this->size();
+        return feof($this->handle);
     }
 
     /**
@@ -153,13 +152,7 @@ class Stream
      */
     public function write($data)
     {
-        $prepend = mb_substr($this->content, 0, $this->position + 1);
-        $append = mb_substr($this->content, $this->position + 1 + mb_strlen($data));
-
-        $this->content = $prepend.$data.$append;
-        $this->seek(mb_strlen($data), SEEK_CUR);
-
-        return mb_strlen($data);
+        return fwrite($this->handle, $data);
     }
 
     /**
@@ -167,7 +160,9 @@ class Stream
      */
     public function size()
     {
-        return mb_strlen($this->content);
+        $stat = $this->stat();
+
+        return $stat['size'];
     }
 
     /**
@@ -175,23 +170,7 @@ class Stream
      */
     public function stat()
     {
-        $stat = array(
-            'dev' => 19,
-            'ino' => 0,
-            'mode' => 0100666,
-            'nlink' => 1,
-            'uid' => 1,
-            'gid' => 1,
-            'rdev' => 0,
-            'size' => $this->size(),
-            'atime' => time(),
-            'mtime' => time(),
-            'ctime' => time(),
-            'blksize' => -1,
-            'blocks' => -1,
-        );
-
-        return array_merge(array_values($stat), $stat);
+        return fstat($this->handle);
     }
 
     /**
@@ -215,6 +194,20 @@ class Stream
      */
     public function getContent()
     {
-        return $this->content;
+        $position = ftell($this->handle);
+        fseek($this->handle, 0);
+        $content = stream_get_contents($this->handle);
+        fseek($this->handle, $position);
+
+        return $content;
+    }
+
+    /**
+     * @param $mode
+     * @return bool
+     */
+    private function isAppendMode($mode)
+    {
+        return stripos($mode, 'a') !== false;
     }
 }

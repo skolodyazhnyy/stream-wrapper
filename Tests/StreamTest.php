@@ -83,6 +83,25 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     *
+     */
+    public function testAppend()
+    {
+        $initial = 'hello';
+        $string = ' world';
+
+        $stream = new Stream($initial);
+        $fh = fopen($stream->getUri(), 'a');
+        $written = fwrite($fh, $string);
+        $written += fwrite($fh, $string);
+        $written += fwrite($fh, $string);
+        fclose($fh);
+
+        $this->assertEquals($initial.$string.$string.$string, $stream->getContent());
+        $this->assertEquals($written, 3 * strlen($string));
+    }
+
+    /**
      * @param $start
      * @param $offset
      * @param $whence
@@ -106,11 +125,12 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     public function provideSeekAndTell()
     {
         return array(
-            'Seeking in empty file' => array(0,  100, SEEK_SET, 0,  -1),
+            'Seeking in empty file' => array(0,  100, SEEK_SET, 0, false),
             'Seek set' => array(10, 5,   SEEK_SET, 20, 5),
             'Seek cur' => array(10, 5,   SEEK_CUR, 20, 15),
             'Seek end' => array(10, -5,  SEEK_END, 20, 15),
-            'Seek over the end' => array(10, 10,  SEEK_CUR, 19, 18),
+            'Seek to the end' => array(10, 0, SEEK_END, 19, 19),
+            'Seek over the end' => array(10, 10,  SEEK_CUR, 19, false),
         );
     }
 

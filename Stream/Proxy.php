@@ -70,7 +70,10 @@ abstract class Proxy implements WrapperInterface
      */
     public function stream_tell()
     {
-        return $this->getStream()->tell();
+        $tell = $this->getStream()->tell();
+        var_dump(spl_object_hash($this->getStream()).' telling '.$tell);
+
+        return $tell;
     }
 
     /**
@@ -164,7 +167,7 @@ abstract class Proxy implements WrapperInterface
      */
     public function stream_open($path, $mode, $options, &$opened_path)
     {
-        return $this->getStream()->open($path, $mode, $opened_path, $opened_path);
+        return $this->getStream()->open($path, $mode, $options, $opened_path);
     }
 
     /**
@@ -251,7 +254,7 @@ abstract class Proxy implements WrapperInterface
     }
 
     /**
-     * @throws \Exception
+     *
      */
     public function dir_closedir()
     {
