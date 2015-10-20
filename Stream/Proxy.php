@@ -70,10 +70,7 @@ abstract class Proxy implements WrapperInterface
      */
     public function stream_tell()
     {
-        $tell = $this->getStream()->tell();
-        var_dump(spl_object_hash($this->getStream()).' telling '.$tell);
-
-        return $tell;
+        return $this->getStream()->tell();
     }
 
     /**
